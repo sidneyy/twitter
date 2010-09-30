@@ -3,6 +3,17 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 
+Rails::Initializer.run do |config|
+# your other config here
+config.gem 'oink'
+begin
+  require 'hodel_3000_compliant_logger'
+  config.logger = Hodel3000CompliantLogger.new(config.log_path)
+rescue LoadError => e
+  $stderr.puts "Hodel3000CompliantLogger unavailable, oink will be disabled"
+end
+end
+
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
